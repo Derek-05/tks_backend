@@ -5,18 +5,18 @@ const { isAdmin, isAuthenticated } = require('../middleware/auth');
 const router = express.Router();
 
 // /api/allJobs
-router.get('/',  getAllJobOfferings );
+router.get('/allJobs', isAuthenticated, isAdmin,  getAllJobOfferings );
 
 // /api/job/:id
-router.get('/jobs/:id',getJobOfferingById);
+router.get('/job/:id',getJobOfferingById);
 
 // /api/createJob
-router.post('/jobs:id', createJobOffering);
+router.post('/createJob',isAuthenticated, isAdmin, createJobOffering);
 
 // /api/updateJob/:id
-router.put('/jobs:id', updateJobOffering);
+router.put('/updateJob/:id', updateJobOffering);
 
 // /api/deleteJob/:id
-router.delete('/jobs:id', deleteJobOffering);
+router.delete('/deleteJob/:id', deleteJobOffering);
 
 module.exports = router;
