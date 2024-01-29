@@ -51,6 +51,14 @@ const Applicants = sequelize.define('applicants', {
    file_type:{
         type:DataTypes.STRING,
     },
+
+    id:{
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notNull: { msg: "Job ID is required" }
+        }
+    }
 });
 
 sequelize.sync().then(() => {
