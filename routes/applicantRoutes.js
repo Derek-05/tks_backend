@@ -1,5 +1,6 @@
 const express = require("express");
 const { getAllApplicants, getApplicantsById, createApplicants, updateApplicants, deleteApplicants } = require("../controllers/applicantsControllers");
+const {isAuthenticated} = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router.get('/allApplicants', getAllApplicants );
 router.get('/getApplicants/:id', getApplicantsById);
 
 // /api/createApplicant
-router.post('/create/applicant', createApplicants);
+router.post('/create/applicant',isAuthenticated, createApplicants);
 
 // /api/updateApplicants/:id
 router.put('/updateApplicants/:id', updateApplicants);
