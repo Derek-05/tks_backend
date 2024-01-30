@@ -57,12 +57,15 @@ const JobOffering = sequelize.define('jobOffering', {
     },
 
     
-    
-});
+
+    });
 
 // Define the association
+
 JobOffering.belongsTo(User, { foreignKey: 'user_id' });
 User.hasMany(JobOffering, { foreignKey: 'user_id' });
+
+
 
 sequelize.sync().then(() => {
     console.log('jobOffering table has been created!');

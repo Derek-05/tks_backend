@@ -36,12 +36,16 @@ exports.getApplicantsById = async (req, res, next) => {
 exports.createApplicants = async (req, res, next) => {
     try {
         const newApplicant = await Applicants.create({
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
+            first_name: req.user.first_name,
+            last_name: req.user.last_name,
+            email:req.user.email,
             phone_number: req.body.phone_number,
+            id: req.body.id,
+            user_id: req.user.user_id,
             file_name: req.body.file_name,
             file_type: req.body.file_type,
+            
+
             
             
         });

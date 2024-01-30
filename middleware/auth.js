@@ -3,6 +3,8 @@ const ErrorResponse = require('../utils/errorResponse');
 const JWT = require('jsonwebtoken');
 const User = require('../models/userModel');
 
+
+
 //check is user is authenticated
 
 exports.isAuthenticated = async (req, res, next) => {
@@ -32,9 +34,22 @@ exports.isAuthenticated = async (req, res, next) => {
 
 // Middleware for admin
 exports.isAdmin = (req, res, next) => {
-    if (req.user.role === 'user') {
-        return next(new ErrorResponse('Access denied, you must be an admin', 401));
+    // Check if the user object exists in the request and contains a roleId
+    if (!req.user || !req.user.roleId) {
+        // If roleId is missing, user is not authenticated or role not assigned
+        return next(new ErrorResponse('Unauthorized', 401));
     }
+
+    // Assuming admin role ID is 2
+    const adminRoleId = 2;
+
+    // Check if the user's roleId matches the admin role ID
+    if (req.user.roleId !== adminRoleId) {
+        // If not an admin, return error response
+        return next(new ErrorResponse('Access denied. You must be an admin.', 403));
+    }
+
+    // If user is an admin, allow the request to proceed
     next();
 };
 
