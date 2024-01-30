@@ -1,0 +1,147 @@
+Applicants Management API
+Base URL: localhost:8080/api
+
+Endpoints
+Get All Applicants
+
+    URL: /allApplicants
+    Method: GET
+    Description: Retrieves all applicants.
+    Response:
+        Status Code: 200 OK
+        Body:
+
+        json
+
+        {
+            "success": true,
+            "applicants": [array_of_applicants]
+        }
+
+Get Single Applicant
+
+    URL: /:getApplicants/:id
+    Method: GET
+    Description: Retrieves a single applicant by their ID.
+    Path Parameters:
+        applicant_id: ID of the applicant to retrieve
+    Response:
+        Status Code: 200 OK
+        Body:
+
+        json
+
+    {
+        "success": true,
+        "applicant": {applicant_object}
+    }
+
+Error Response:
+
+    Status Code: 404 Not Found
+    Body:
+
+    json
+
+        {
+            "success": false,
+            "error": "Applicant not found"
+        }
+
+Create Applicant
+
+    URL: /create/applicant
+    Method: POST
+    Description: Creates a new applicant.
+    Request Body:
+        phone_number: Phone number of the applicant
+        id: ID of the applicant (optional)
+        file_name: Name of the file uploaded by the applicant
+        file_type: Type of the file uploaded by the applicant
+    Response:
+        Status Code: 201 Created
+        Body:
+
+        json
+
+        {
+            "success": true,
+            "newApplicant": {created_applicant_object}
+        }
+
+Update Applicant
+
+    URL: /updateApplicant/:id
+    Method: PUT
+    Description: Updates an existing applicant by their ID.
+    Path Parameters:
+        applicant_id: ID of the applicant to update
+    Request Body:
+        Data to update the applicant with
+    Response:
+        Status Code: 200 OK
+        Body:
+
+        json
+
+    {
+        "success": true,
+        "data": {
+            "updatedApplicant": {updated_applicant_object}
+        }
+    }
+
+Error Response:
+
+    Status Code: 404 Not Found
+    Body:
+
+    json
+
+        {
+            "success": false,
+            "error": "Applicant not found"
+        }
+
+Delete Applicant
+
+    URL: /deleteApplicants/:id
+    Method: DELETE
+    Description: Deletes an existing applicant by their ID.
+    Path Parameters:
+        applicant_id: ID of the applicant to delete
+    Response:
+        Status Code: 200 OK
+        Body:
+
+        json
+
+    {
+        "success": true,
+        "message": "Applicant deleted"
+    }
+
+Error Response:
+
+    Status Code: 404 Not Found
+    Body:
+
+    json
+
+        {
+            "success": false,
+            "error": "Applicant not found"
+        }
+
+Error Responses
+
+    Status Code: 500 Internal Server Error
+        Body:
+
+        json
+
+        {
+            "success": false,
+            "error": "Internal Server Error"
+        }
+
