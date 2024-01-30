@@ -9,6 +9,31 @@ const Applicants = sequelize.define('applicants', {
         autoIncrement: true,
         primaryKey: true
     },
+
+    first_name:{
+        type: DataTypes.STRING,
+        trim: true,
+        required: [true, 'first name is required'],
+        maxlength: 32,
+    },
+    
+    last_name:{
+        type: DataTypes.STRING,
+        trim: true,
+        required: [true, 'last name is required'],
+        maxlength: 32,
+    },
+
+    email:{
+        type: DataTypes.STRING,
+        trim: true,
+        required: [true, 'email is required'],
+        unique: true,
+        match:[
+            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+            "Please add a valid email"
+        ]
+    },
     phone_number: {
         type: DataTypes.STRING,
         allowNull: false,
