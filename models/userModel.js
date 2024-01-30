@@ -3,6 +3,7 @@ const sequelize = require("../database/db");
 const bcrypt = require("bcryptjs");
 const JWT = require('jsonwebtoken');
 const Role = require('../models/roleModel'); 
+require('dotenv').config();
 
 
  const Users = sequelize.define('users', {
@@ -74,7 +75,7 @@ Role.hasMany( Users, { foreignKey: 'roleId' }); // Each role can have many users
 
     //Return the JWT Token
     Users.prototype.getJwtToken = function () {
-        return JWT.sign({ user: this.user_id }, 'THEBIGSECRET', {
+        return JWT.sign({ user: this.user_id }, process.env.JWT_SECRET, {
             expiresIn: 3600,
         });
     };
