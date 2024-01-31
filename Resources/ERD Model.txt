@@ -40,6 +40,8 @@ erDiagram
 
     %% Foreign keys stop
 
+    %%MODEL STARTS
+
     ROLE {
         
         name VARCHAR
@@ -73,6 +75,8 @@ erDiagram
         applicationDeadline DATE
         
     }
+    
+    %%MODEL FINISH
 
     %% Relationships
     USER ||--o| ROLE : belongs_to
