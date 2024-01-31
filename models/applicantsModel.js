@@ -13,33 +13,40 @@ const Applicants = sequelize.define('applicants', {
     first_name:{
         type: DataTypes.STRING,
         trim: true,
-        required: [true, 'first name is required'],
+        allowNull: false,
+            validate: {
+                notNull: { msg: "First Name is required" }
+            },
         maxlength: 32,
     },
     
     last_name:{
         type: DataTypes.STRING,
         trim: true,
-        required: [true, 'last name is required'],
+        allowNull: false,
+            validate: {
+                notNull: { msg: "Last Name is required" }
+            },
         maxlength: 32,
     },
 
     email:{
         type: DataTypes.STRING,
         trim: true,
-        required: [true, 'email is required'],
+        allowNull: false,
+            validate: {
+                notNull: { msg: "email is required" },
+                is:/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+            },
         unique: true,
-        match:[
-            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-            "Please add a valid email"
-        ]
+        
     },
     phone_number: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notNull: { msg: "Phone Number is required" },
-            is: /^\+?\d{7,}$/ // Example validation for phone number format
+            is: /^\+?\d{7,}$/ 
         }
     },
     file_name: {
