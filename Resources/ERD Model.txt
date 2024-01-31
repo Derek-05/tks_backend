@@ -1,0 +1,80 @@
+erDiagram
+   
+
+    %% Primary keys
+    ROLE {
+        roleId INT
+    }
+    
+
+    USER {
+        user_id INT
+    
+    }
+
+    APPLICANT {
+        applicant_id INT
+    }
+
+    JOB {
+        id INT
+    }
+    
+    %%Primary keys stop
+
+    %% Foreign keys
+    
+    USER {
+        roleId INT
+    }
+
+    APPLICANT {
+        user_id INT
+        id INT
+    }
+
+    JOB {
+        applicant_id INT
+        user_id INT
+    }
+
+    %% Foreign keys stop
+
+    ROLE {
+        
+        name VARCHAR
+    }
+    
+    USER {
+        
+        email VARCHAR
+        password VARCHAR
+    }
+    
+
+    APPLICANT {
+        
+        
+        first_name VARCHAR
+        last_name VARCHAR
+        email VARCHAR
+        phone_number VARCHAR
+        file_name VARCHAR
+        file_type VARCHAR
+    }
+    
+    JOB {
+        
+        title VARCHAR
+        description TEXT
+        salary DECIMAL
+        qualifications TEXT
+        available BOOLEAN
+        applicationDeadline DATE
+        
+    }
+
+    %% Relationships
+    USER ||--o| ROLE : belongs_to
+    USER ||--o| APPLICANT : has
+    APPLICANT ||--o| JOB : applies_for
