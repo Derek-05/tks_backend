@@ -69,13 +69,14 @@ exports.getJobOfferingById = async (req, res, next) => {
 exports.createJobOffering = async (req, res, next) => {
     try {
         const newJobOffering = await JobOffering.create({
+            user_id: req.user.user_id,
             title: req.body.title,
             description: req.body.description,
             salary: req.body.salary,
             qualifications: req.body.qualifications,
             available: req.body.available,
             applicationDeadline: req.body.applicationDeadline,
-            user_id: req.user.user_id
+            
             
         });
         res.status(201).json({

@@ -36,6 +36,8 @@ exports.getApplicantsById = async (req, res, next) => {
 exports.createApplicants = async (req, res, next) => {
     try {
         const newApplicant = await Applicants.create({
+            user_id: req.user.user_id,
+            id: req.body.id,
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             email: req.body.email,

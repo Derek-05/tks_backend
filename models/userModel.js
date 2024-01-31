@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require("../database/db");
 const bcrypt = require("bcryptjs");
 const JWT = require('jsonwebtoken');
+const Role = require('../models/roleModel'); 
 
 
  const Users = sequelize.define('users', {
@@ -40,20 +41,25 @@ const JWT = require('jsonwebtoken');
     password:{
         type: DataTypes.STRING,
         trim: true,
-        required: [true, 'password is required'],
+        required: false,
         minlength: [6, 'password must have at least (6) characters'],
     },
-    
-    //for the role we are identifying the user as 0 and the admin as 1
 
-    role:{
-        type: DataTypes.STRING,
-        defaultValue:"user",
+    roleId:{
+        type: DataTypes.INTEGER,
+        defaultValue: 1,
         allowNull: false,
-    },
+        validate: {
+        notNull: { msg: "Role ID is required" }
+        }
+    }
 
-   
-    });  
+    
+});  
+
+Users.belongsTo(Role, { foreignKey: 'roleId' }); // Each user belongs to one role
+Role.hasMany( Users, { foreignKey: 'roleId' }); // Each role can have many users
+
 
     //Encrypting password before saving
     Users.beforeCreate(async (user) => {
