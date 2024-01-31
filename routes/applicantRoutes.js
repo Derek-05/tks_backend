@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/allApplicants', isAuthenticated, isAdmin,  getAllApplicants );
 
 // /api/getApplicants/:id
-router.get('/getApplicants/:id', isAuthenticated, getApplicantsById);
+router.get('/getApplicants/:id', isAuthenticated, isAdmin, getApplicantsById);
 
 // /api/createApplicant
 router.post('/create/applicant', isAuthenticated, createApplicants);

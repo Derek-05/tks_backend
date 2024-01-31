@@ -51,7 +51,7 @@ const Applicants = sequelize.define('applicants', {
     },
     file_name: {
         type: DataTypes.STRING,
-        defaultValue: null // Adjust the default value as needed
+        defaultValue: 1
     },
     file_type: {
         type: DataTypes.STRING,
