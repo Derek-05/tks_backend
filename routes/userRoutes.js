@@ -13,7 +13,7 @@ const router = express.Router();
 router.get('/allusers',isAuthenticated, isAdmin, allUsers);
 
 // /api/singleuser/:id
-router.get('/singleuser/:id',isAuthenticated, singleUser);
+router.get('/singleuser/:id',isAuthenticated, isAdmin, singleUser);
 
 // /api/edituser/:id
 router.put('/edituser/:id',isAuthenticated, editUser);
