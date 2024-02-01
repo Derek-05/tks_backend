@@ -20,10 +20,12 @@ exports.getAllApplicants = async (req, res, next) => {
 //Get a single applicant by id
 exports.getApplicantsById = async (req, res, next) => {
     try {
-        const applicant = await Applicants.findByPk(req.params.applicant_id);
+        const applicant = await Applicants.findByPk(req.params.id);
             res.status(200).json({
                 success: true,
-                applicant
+                data: {
+                    applicant,
+                },
              })
     } catch (error) {
         next(error);
@@ -36,6 +38,8 @@ exports.getApplicantsById = async (req, res, next) => {
 exports.createApplicants = async (req, res, next) => {
     try {
         const newApplicant = await Applicants.create({
+            user_id: req.user.user_id,
+            id: req.body.id,
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             email: req.body.email,
@@ -59,7 +63,7 @@ exports.createApplicants = async (req, res, next) => {
 exports.updateApplicants = async (req, res, next) => {
     
     try {
-        const Applicant = await Applicants.findByPk(req.params.applicant_id);
+        const Applicant = await Applicants.findByPk(req.params.id);
 
         if (!Applicant) {
             throw new ErrorResponse('Applicant not found', 404);
@@ -83,7 +87,7 @@ exports.updateApplicants = async (req, res, next) => {
 exports.deleteApplicants = async (req, res, next) => {
     try {
         
-        const applicant= await Applicants.findByPk(req.params.applicant_id);
+        const applicant= await Applicants.findByPk(req.params.id);
 
         await applicant.destroy();
 

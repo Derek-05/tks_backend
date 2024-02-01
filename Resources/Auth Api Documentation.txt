@@ -1,0 +1,126 @@
+User Authentication & Profile Management API
+Base URL: localhost:8080/api
+
+Endpoints
+Sign Up
+
+    URL: /signup
+    Method: POST
+    Description: Creates a new user account.
+    Request Body:
+        email: Email of the user
+        password: Password for the user account
+        Additional user data
+    Response:
+        Status Code: 201 Created
+        Body:
+
+        json
+
+    {
+        "success": true,
+        "user": {created_user_object}
+    }
+
+Error Response:
+
+    Status Code: 400 Bad Request
+    Body:
+
+    json
+
+        {
+            "success": false,
+            "error": "Email already registered" || "Please add an email" || "Please add a password"
+        }
+
+Sign In
+
+    URL: /signin
+    Method: POST
+    Description: Authenticates a user and generates a JWT token.
+    Request Body:
+        email: Email of the user
+        password: Password for the user account
+    Response:
+        Status Code: 200 OK
+        Body:
+
+        json
+
+    {
+        "success": true,
+        "token": "jwt_token",
+        "user": {user_object_without_password}
+    }
+
+Error Response:
+
+    Status Code: 400 Bad Request
+    Body:
+
+    json
+
+        {
+            "success": false,
+            "error": "Invalid credentials"
+        }
+
+Log Out
+
+    URL: /logout
+    Method: GET
+    Description: Logs out the user and clears the authentication token.
+    Response:
+        Status Code: 200 OK
+        Body:
+
+        json
+
+        {
+            "success": true,
+            "message": "logged out"
+        }
+
+User Profile
+
+    URL: /me
+    Method: GET
+    Description: Retrieves the profile information of the authenticated user.
+    Authorization Header:
+        Authorization: Bearer jwt_token
+    Response:
+        Status Code: 200 OK
+        Body:
+
+        json
+
+    {
+        "success": true,
+        "user": {user_object_without_password}
+    }
+
+Error Response:
+
+    Status Code: 404 Not Found
+    Body:
+
+    json
+
+        {
+            "success": false,
+            "error": "User not found"
+        }
+
+Error Responses
+
+    Status Code: 500 Internal Server Error
+        Body:
+
+        json
+
+        {
+            "success": false,
+            "error": "Internal Server Error"
+        }
+

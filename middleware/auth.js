@@ -32,7 +32,7 @@ exports.isAuthenticated = async (req, res, next) => {
 
 // Middleware for admin
 exports.isAdmin = (req, res, next) => {
-    if (req.user.role === 'user') {
+    if (req.user.roleId === 1) {
         return next(new ErrorResponse('Access denied, you must be an admin', 401));
     }
     next();

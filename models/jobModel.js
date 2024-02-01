@@ -11,7 +11,10 @@ const JobOffering = sequelize.define('jobOffering', {
     
     title:{
         type:DataTypes.STRING,
-        required: [true, "Title is required"],
+        allowNull: false,
+        validate: {
+            notNull: { msg: "Title is required" }
+        },
         maxlength: 70,
     },
     
@@ -19,14 +22,22 @@ const JobOffering = sequelize.define('jobOffering', {
     description:{
         type:DataTypes.STRING,
         trim: true,
-        required: [true, "Description is required"],
+        allowNull: false,
+        validate: {
+            notNull: { msg: "Description is required" }
+        }
+       
     }, 
     
     
     salary:{
          type:DataTypes.STRING,
          trim: true,
-         required: [true, "Salary is required"]
+         allowNull: false,
+        validate: {
+            notNull: { msg: "Salary is required" }
+        }
+         
     },
     
     
@@ -34,7 +45,11 @@ const JobOffering = sequelize.define('jobOffering', {
     qualifications:{
         type:DataTypes.STRING,
         trim: true,
-        required: [true, "Qualifications is required"]
+        allowNull: false,
+        validate: {
+            notNull: { msg: "Qualifications is required" }
+        }
+        
     },
 
     available:{
