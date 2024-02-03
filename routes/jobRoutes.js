@@ -5,10 +5,10 @@ const { isAdmin, isAuthenticated } = require('../middleware/auth');
 const router = express.Router();
 
 // /api/allJobs
-router.get('/allJobs', isAuthenticated, isAdmin,  getAllJobOfferings );
+router.get('/allJobs', getAllJobOfferings );
 
 // /api/job/:id
-router.get('/job/:id',isAuthenticated,getJobOfferingById);
+router.get('/job/:id',getJobOfferingById);
 
 // /api/createJob
 router.post('/createJob',isAuthenticated, isAdmin, createJobOffering);

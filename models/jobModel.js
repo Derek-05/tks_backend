@@ -58,11 +58,7 @@ const JobOffering = sequelize.define('jobOffering', {
     },
     
     
-   applicationDeadline:{
-        type:DataTypes.DATE,
-    },
-
-    user_id:{
+   user_id:{
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {

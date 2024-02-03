@@ -32,7 +32,10 @@ exports.getAllJobOfferings = async (req, res, next) => {
             where: { ...keyword },
             offset: offset,
             limit: jobPerPage,
+            attributes: { exclude: ['user_id'] },
         });
+
+    
 
         // Get the total count for calculating total pages
         const count = await JobOffering.count({ where: { ...keyword } });
@@ -75,7 +78,7 @@ exports.createJobOffering = async (req, res, next) => {
             salary: req.body.salary,
             qualifications: req.body.qualifications,
             available: req.body.available,
-            applicationDeadline: req.body.applicationDeadline,
+            
             
             
         });
