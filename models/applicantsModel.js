@@ -10,21 +10,36 @@ const Applicants = sequelize.define('applicants', {
         primaryKey: true
     },
 
-    
-    first_name:{
-        type:DataTypes.STRING,
-        required: [true, "First Name is required"],
-        maxlength: 70,
+    first_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        trim: true,
+        validate: {
+            notNull: {
+                msg: "First Name is required"
+            },
+            len: {
+                args: [1, 20],
+                msg: "First Name must be between 1 and 20 characters"
+            },
+        },
     },
     
-    
-    last_name:{
-        type:DataTypes.STRING,
+    last_name: {
+        type: DataTypes.STRING,
+        allowNull: false,
         trim: true,
-        required: [true, "Last Name is required"],
-    }, 
-    
-    
+        validate: {
+            notNull: {
+                msg: "Last Name is required"
+            },
+            len: {
+                args: [1, 20],
+                msg: "Last Name must be between 1 and 15 characters"
+            },
+        },
+    },
+
     email:{
         type: DataTypes.STRING,
         trim: true,
@@ -34,30 +49,50 @@ const Applicants = sequelize.define('applicants', {
                 is:/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
             },
         unique: true,
-        match:[
-            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-            "Please add a valid email"
-        ]
+        
+    },
+    phone_number: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+            notNull: { msg: "Phone Number is required" },
+            is: /^\+?\d{7,}$/ 
+        }
+    },
+    file_name: {
+        type: DataTypes.STRING,
+        defaultValue: 1
+    },
+    file_type: {
+        type: DataTypes.STRING,
     },
     
-    
-    phone_number:{
-        type:DataTypes.STRING,
-        trim: true,
-        required: [true, "Phone Number is required"]
-    },
-
-    file_name:{
-        type:DataTypes.STRING,
-        default: true,
+    user_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        validate: {
+            notNull: { msg: "User ID is required" }
+        }
     },
     
-    
-   file_type:{
-        type:DataTypes.STRING,
-    },
+    id: {
+        type: DataTypes.INTEGER, 
+        allowNull: false,
+        validate: {
+            notNull: { msg: "Job ID is required" }
+        }
+    }
 });
 
+Applicants.belongsTo(User, { foreignKey: 'user_id' });
+User.hasMany(Applicants, { foreignKey: 'user_id' });
+
+Applicants.belongsTo(JobOffering, { foreignKey: 'id' });
+JobOffering.hasMany(Applicants, { foreignKey: 'id' });
+
+
+
+// Remove sync() if you're managing migrations separately
 sequelize.sync().then(() => {
     console.log('Applicants table has been created!');
 }).catch((error) => {

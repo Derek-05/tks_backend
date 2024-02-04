@@ -47,8 +47,6 @@ exports.createApplicants = async (req, res, next) => {
             file_name: req.body.file_name,
             file_type: req.body.file_type,
             
-
-            
             
         });
         res.status(201).json({
