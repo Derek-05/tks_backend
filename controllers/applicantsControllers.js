@@ -1,40 +1,35 @@
 const Applicants = require('../models/applicantsModel');
-const ErrorResponse = require("../utils/errorResponse");
+const ErrorResponse = require('../utils/errorResponse');
 
 // Get all applicants
 exports.getAllApplicants = async (req, res, next) => {
     try {
         const applicants = await Applicants.findAll();
-
         res.status(200).json({
             success: true,
-            applicants
-            });
-    
-        } catch (error) {
-        next(error);
-    }
-};
-
-
-//Get a single applicant by id
-exports.getApplicantsById = async (req, res, next) => {
-    try {
-        const applicant = await Applicants.findByPk(req.params.id);
-            res.status(200).json({
-                success: true,
-                data: {
-                    applicant,
-                },
-             })
+            applicants,
+        });
     } catch (error) {
         next(error);
     }
 };
 
+// Get a single applicant by id
+exports.getApplicantsById = async (req, res, next) => {
+    try {
+        const applicant = await Applicants.findByPk(req.params.id);
+        res.status(200).json({
+            success: true,
+            data: {
+                applicant,
+            },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
-
-//Create an applicant
+// Create an applicant
 exports.createApplicants = async (req, res, next) => {
     try {
         const newApplicant = await Applicants.create({
@@ -46,57 +41,54 @@ exports.createApplicants = async (req, res, next) => {
             phone_number: req.body.phone_number,
             file_name: req.body.file_name,
             file_type: req.body.file_type,
-            
-            
         });
         res.status(201).json({
             success: true,
-            newApplicant
-        })
-    } catch(error){
+            newApplicant,
+        });
+    } catch (error) {
         next(error);
     }
 };
 
-
 // Update an existing applicant by id
 exports.updateApplicants = async (req, res, next) => {
-    
     try {
-        const Applicant = await Applicants.findByPk(req.params.id);
+        const applicant = await Applicants.findByPk(req.params.id);
 
-        if (!Applicant) {
+        if (!applicant) {
             throw new ErrorResponse('Applicant not found', 404);
-        };
+        }
 
-        const updatedApplicant = await Applicant.update(req.body, { new: true });
+        const updatedApplicant = await applicant.update(req.body);
 
         res.status(200).json({
             success: true,
             data: {
-               updatedApplicant,
+                updatedApplicant,
             },
         });
-    
     } catch (error) {
         next(error);
-    };
+    }
 };
 
-//Delete an applicant by id
+// Delete an applicant by id
 exports.deleteApplicants = async (req, res, next) => {
     try {
-        
-        const applicant= await Applicants.findByPk(req.params.id);
+        const applicant = await Applicants.findByPk(req.params.id);
+
+        if (!applicant) {
+            throw new ErrorResponse('Applicant not found', 404);
+        }
 
         await applicant.destroy();
 
         res.status(200).json({
             success: true,
-            message: "Applicant deleted",
+            message: 'Applicant deleted',
         });
     } catch (error) {
         next(error);
-    };
-    
+    }
 };
