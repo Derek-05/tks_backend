@@ -2,6 +2,8 @@ const { DataTypes } = require('sequelize');
 const sequelize = require("../database/db");
 const bcrypt = require("bcryptjs");
 const JWT = require('jsonwebtoken');
+const Role = require('../models/roleModel');
+const dotenv = require('dotenv')
 
 
  const Users = sequelize.define('users', {
@@ -58,17 +60,26 @@ const JWT = require('jsonwebtoken');
         type: DataTypes.STRING,
         allowNull: false,
         trim: true,
-        required: [true, 'password is required'],
-        minlength: [6, 'password must have at least (6) characters'],
+        validate: {
+            notNull: {
+                msg: "Password is required"
+            },
+            len: {
+                args: [6],
+                msg: "Password must have at least 6 characters"
+            },
+        },
     },
     
-    //for the role we are identifying the user as 0 and the admin as 1
 
-    role:{
-        type: DataTypes.STRING,
-        defaultValue:"user",
+    roleId:{
+        type: DataTypes.INTEGER,
+        defaultValue: 1,
         allowNull: false,
-    },
+        validate: {
+            notNull: { msg: "Role ID is required" }
+        }
+    }
 
     
 });  
