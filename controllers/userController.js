@@ -1,4 +1,5 @@
 const User = require('../models/userModel');
+
 const ErrorResponse = require('../utils/errorResponse');
 
 
@@ -98,3 +99,4 @@ exports.deleteUser = async (req, res, next) => {
         next(error instanceof ErrorResponse ? error : new ErrorResponse('Internal Server Error', 500));
     }
 };
+

@@ -1,23 +1,23 @@
 const express = require("express");
 const { getAllApplicants, getApplicantsById, createApplicants, updateApplicants, deleteApplicants } = require("../controllers/applicantsControllers");
-const {isAuthenticated, isAdmin} = require("../middleware/auth")
+
 const router = express.Router();
 
 //applicant routes
 
 // /api/allApplicants
-router.get('/allApplicants', isAuthenticated, isAdmin,  getAllApplicants );
+router.get('/allApplicants', getAllApplicants );
 
 // /api/getApplicants/:id
-router.get('/getApplicants/:id', isAuthenticated, isAdmin, getApplicantsById);
+router.get('/getApplicants/:id', getApplicantsById);
 
 // /api/createApplicant
-router.post('/create/applicant', createApplicants);
+router.post('/create/applicant', isAuthenticated, createApplicants);
 
 // /api/updateApplicants/:id
 router.put('/updateApplicants/:id', isAuthenticated, updateApplicants);
 
 // /api/
-router.delete('/deleteApplicants/:id', isAuthenticated, isAdmin, deleteApplicants)
+router.delete('/deleteApplicants/:id', deleteApplicants)
 
 module.exports= router;
