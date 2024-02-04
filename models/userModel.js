@@ -2,6 +2,8 @@ const { DataTypes } = require('sequelize');
 const sequelize = require("../database/db");
 const bcrypt = require("bcryptjs");
 const JWT = require('jsonwebtoken');
+const Role = require('../models/roleModel');
+const dotenv = require('dotenv')
 
 
  const Users = sequelize.define('users', {
@@ -12,48 +14,79 @@ const JWT = require('jsonwebtoken');
        
     },
 
-    first_name:{
+    first_name: {
         type: DataTypes.STRING,
+        allowNull: false,
         trim: true,
-        required: [true, 'first name is required'],
-        maxlength: 32,
+        validate: {
+            notNull: {
+                msg: "First Name is required"
+            },
+            len: {
+                args: [1, 20],
+                msg: "First Name must be between 1 and 15 characters"
+            },
+        },
     },
     
-    last_name:{
+    last_name: {
         type: DataTypes.STRING,
+        allowNull: false,
         trim: true,
-        required: [true, 'last name is required'],
-        maxlength: 32,
+        validate: {
+            notNull: {
+                msg: "Last Name is required"
+            },
+            len: {
+                args: [1, 20],
+                msg: "Last Name must be between 1 and 15 characters"
+            },
+        },
     },
 
     email:{
         type: DataTypes.STRING,
         trim: true,
-        required: [true, 'email is required'],
+        allowNull: false,
+            validate: {
+                notNull: { msg: "Email is required" },
+                is:/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+            },
         unique: true,
-        match:[
-            /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-            "Please add a valid email"
-        ]
+        
     },
 
-    password:{
+    password: {
         type: DataTypes.STRING,
+        allowNull: false,
         trim: true,
-        required: [true, 'password is required'],
-        minlength: [6, 'password must have at least (6) characters'],
+        validate: {
+            notNull: {
+                msg: "Password is required"
+            },
+            len: {
+                args: [6],
+                msg: "Password must have at least 6 characters"
+            },
+        },
     },
     
-    //for the role we are identifying the user as 0 and the admin as 1
 
-    role:{
-        type: DataTypes.STRING,
-        defaultValue:"user",
+    roleId:{
+        type: DataTypes.INTEGER,
+        defaultValue: 1,
         allowNull: false,
-    },
+        validate: {
+            notNull: { msg: "Role ID is required" }
+        }
+    }
 
-   
-    });  
+    
+});  
+
+Users.belongsTo(Role, { foreignKey: 'roleId' }); // Each user belongs to one role
+Role.hasMany( Users, { foreignKey: 'roleId' }); // Each role can have many users
+
 
     //Encrypting password before saving
     Users.beforeCreate(async (user) => {
@@ -67,8 +100,9 @@ const JWT = require('jsonwebtoken');
       };
 
     //Return the JWT Token
+    dotenv.config()
     Users.prototype.getJwtToken = function () {
-        return JWT.sign({ user: this.user_id }, 'THEBIGSECRET', {
+        return JWT.sign({ user: this.user_id, role: this.roleId }, process.env.JWT_SECRET, {
             expiresIn: 3600,
         });
     };
