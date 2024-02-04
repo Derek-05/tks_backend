@@ -1,8 +1,7 @@
+//Middleware for user authentication
 const ErrorResponse = require('../utils/errorResponse');
 const JWT = require('jsonwebtoken');
 const User = require('../models/userModel');
-
-
 
 //check is user is authenticated
 
@@ -33,10 +32,10 @@ exports.isAuthenticated = async (req, res, next) => {
 
 // Middleware for admin
 exports.isAdmin = (req, res, next) => {
-    if (req.user.role === 'user') {
+    if (req.user.roleId === 1) {
         return next(new ErrorResponse('Access denied, you must be an admin', 401));
     }
-
-    // If user is an admin, allow the request to proceed
     next();
 };
+
+

@@ -1,11 +1,15 @@
 //db connection using postgres
 
-const  Sequelize = require('sequelize');
+const  Sequelize = require('sequelize')
+const dotenv = require("dotenv");
 
- const sequelize = new Sequelize('tks', 'postgres', 'Derek0505', {
-    host: 'localhost',
-    dialect:'postgres'  
-  });
+dotenv.config();
+
+const sequelize = new Sequelize(process.env.Dev_DB_NAME, process.env.Dev_DB_USERNAME, process.env.Dev_DB_PASSWORD, {
+    host: process.env.Dev_DB_HOST,
+    dialect: process.env.Dev_DB_DIALECT
+});
+
 
   
   

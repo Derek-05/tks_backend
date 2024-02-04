@@ -1,7 +1,6 @@
 const User = require('../models/userModel');
 const ErrorResponse = require('../utils/errorResponse');
 
-
 //Crear la cuenta
 exports.signup = async (req, res, next) => {
     const {email} = req.body;
@@ -97,4 +96,3 @@ exports.userProfile = async (req, res, next) => {
         return next(new ErrorResponse('Internal Server Error', 500));
     }
 };
-
