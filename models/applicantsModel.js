@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require("../database/db");
-const User = require("../models/userModel");
+const Users = require("../models/userModel");
 const JobOffering = require("../models/jobModel");
 
 const Applicants = sequelize.define('applicants', {
@@ -84,8 +84,8 @@ const Applicants = sequelize.define('applicants', {
     }
 });
 
-Applicants.belongsTo(User, { foreignKey: 'user_id' });
-User.hasMany(Applicants, { foreignKey: 'user_id' });
+Applicants.belongsTo(Users, { foreignKey: 'user_id' });
+Users.hasMany(Applicants, { foreignKey: 'user_id' });
 
 Applicants.belongsTo(JobOffering, { foreignKey: 'id' });
 JobOffering.hasMany(Applicants, { foreignKey: 'id' });

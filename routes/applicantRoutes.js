@@ -12,7 +12,7 @@ router.get('/allApplicants', isAuthenticated, isAdmin,  getAllApplicants );
 router.get('/getApplicants/:id', isAuthenticated, isAdmin, getApplicantsById);
 
 // /api/createApplicant
-router.post('/create/applicant', createApplicants);
+router.post('/create/applicant', isAuthenticated, createApplicants);
 
 // /api/updateApplicants/:id
 router.put('/updateApplicants/:id', isAuthenticated, updateApplicants);
