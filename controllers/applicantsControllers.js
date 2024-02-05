@@ -32,8 +32,11 @@ exports.getApplicantsById = async (req, res, next) => {
 // Create an applicant
 exports.createApplicants = async (req, res, next) => {
     try {
+        // Check if user_id is provided, if not, set it to null
+        const user_id = req.user.user_id || null;
+
         const newApplicant = await Applicants.create({
-            user_id: req.user.user_id,
+            user_id,
             id: req.body.id,
             first_name: req.body.first_name,
             last_name: req.body.last_name,
