@@ -56,6 +56,14 @@ const dotenv = require('dotenv')
         
     },
 
+    phone_number: {
+        type: DataTypes.STRING,
+        allowNull: true, 
+        validate: {
+            is: /^\+?\d{7,}$/ 
+        }
+    },
+
     password: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -101,18 +109,13 @@ Role.hasMany( Users, { foreignKey: 'roleId' }); // Each role can have many users
 
     //Return the JWT Token
     dotenv.config()
-    Users.prototype.getJwtToken = function () {
-        return JWT.sign({ user: this.user_id, role: this.roleId }, process.env.JWT_SECRET, {
+
+    //updated to use the role name instead of the roleId, else null
+    Users.prototype.getJwtToken = async function () {
+        const role = await Role.findByPk(this.roleId);
+        return JWT.sign({ user: this.user_id, role: role ? role.name : null }, process.env.JWT_SECRET, {
             expiresIn: 3600,
         });
     };
-
-    
-  
-  sequelize.sync().then(() => {
-    console.log('users table has been created!');
- }).catch((error) => {
-    console.error('Unable to create table : ', error);
- });
   
  module.exports = Users;

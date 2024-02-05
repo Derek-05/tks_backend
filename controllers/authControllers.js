@@ -1,5 +1,6 @@
 const User = require('../models/userModel');
 const ErrorResponse = require('../utils/errorResponse');
+const Role = require('../models/roleModel');
 
 //Crear la cuenta
 exports.signup = async (req, res, next) => {
@@ -8,8 +9,21 @@ exports.signup = async (req, res, next) => {
     if (userExist){
         return next (new ErrorResponse("Email already registered", 400));
     }
+
+    //Added role search
+    const adminRole = await Role.findOne({ where: { name: 'admin' } });
+    if (!adminRole) {
+        return next(new ErrorResponse("Admin role not found", 500));
+    }
+
     try {
-        const user = await User.create(req.body);
+        
+        //added role to user creation
+        const user = await User.create({
+            ...req.body,
+            roleId: adminRole.roleId, // DEVELOPMENT PURPOSES ONLY
+        });
+
         res.status(201).json({
             success: true,
             user

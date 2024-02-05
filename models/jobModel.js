@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require("../database/db");
-const User = require("../models/userModel")
+const User = require("./userModel")
 const JobOffering = sequelize.define('jobOffering', {
     id: {
         type: DataTypes.INTEGER,
@@ -74,11 +74,5 @@ const JobOffering = sequelize.define('jobOffering', {
 // Define the association
 JobOffering.belongsTo(User, { foreignKey: 'user_id' });
 User.hasMany(JobOffering, { foreignKey: 'user_id' });
-
-sequelize.sync().then(() => {
-    console.log('jobOffering table has been created!');
- }).catch((error) => {
-    console.error('Unable to create table : ', error);
- });
 
 module.exports = JobOffering;

@@ -4,6 +4,7 @@ const app = express();
 const cors =require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const sequelize = require('./database/db'); 
 const cookieParser = require("cookie-parser");
 const errorHandler = require("./middleware/errorHandler");
 
@@ -17,7 +18,11 @@ const userRoutes = require ('./routes/userRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 const applicantRoutes = require('./routes/applicantRoutes');
 
-
+// Import all models
+const User = require('./models/userModel');
+const Role = require('./models/roleModel'); 
+const JobOffering = require('./models/jobModel'); 
+const Applicants = require('./models/applicantsModel'); 
 
 //Middleware
 app.use(morgan ('dev'));
@@ -44,6 +49,17 @@ app.use('/api', applicantRoutes);
 //custom error Middleware
 app.use(errorHandler);
 
+
+
+// sequelize.sync() will create all table if they doesn't exist in database
+sequelize.sync().then(async () => {
+    console.log('Todas las tablas han sido creadas');
+    
+    // Ensure default roles are present
+    await Role.ensureDefaultRoles();
+}).catch((error) => {
+    console.error('Error al sincronizar la base de datos:', error);
+});
 
 
 

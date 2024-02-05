@@ -6,13 +6,13 @@ const router = express.Router();
 //applicant routes
 
 // /api/allApplicants
-router.get('/allApplicants', isAuthenticated, isAdmin,  getAllApplicants );
+router.get('/allApplicants', isAdmin,  getAllApplicants );
 
 // /api/getApplicants/:id
 router.get('/getApplicants/:id', isAuthenticated, isAdmin, getApplicantsById);
 
-// /api/createApplicant
-router.post('/create/applicant', isAuthenticated, createApplicants);
+// Removed 'isAuthenticated' middleware from this route to allow unauthenticated access
+router.post('/create/applicant', createApplicants);
 
 // /api/updateApplicants/:id
 router.put('/updateApplicants/:id', isAuthenticated, updateApplicants);

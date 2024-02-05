@@ -2,6 +2,7 @@
 const ErrorResponse = require('../utils/errorResponse');
 const JWT = require('jsonwebtoken');
 const User = require('../models/userModel');
+const Role = require('../models/roleModel');
 
 //check is user is authenticated
 
@@ -31,11 +32,34 @@ exports.isAuthenticated = async (req, res, next) => {
 
 
 // Middleware for admin
-exports.isAdmin = (req, res, next) => {
-    if (req.user.roleId === 1) {
+exports.isAdmin = async (req, res, next) => {
+    if (!req.user) {
+        return next(new ErrorResponse('Not authorized to access this route', 401));
+    }
+
+    const role = await Role.findByPk(req.user.roleId);
+    if (role && role.name === 'admin') { // Check if the user's role is admin instead of checking the roleId
+        return next();
+    } else {
         return next(new ErrorResponse('Access denied, you must be an admin', 401));
     }
-    next();
 };
 
+// Middleware for applicant
+exports.isApplicant = async (req, res, next) => {
+    if (!req.user) {
+        return next(new ErrorResponse('Not authorized to access this route', 401));
+    }
 
+    try {
+        const role = await Role.findByPk(req.user.roleId);
+        if (role && role.name === 'applicant') {
+            next();
+        } else {
+            return next(new ErrorResponse('Access denied, you must be an applicant', 401));
+        }
+    } catch (error) {
+        console.error('Error verifying role:', error);
+        return next(new ErrorResponse('Error verifying role', 500));
+    }
+};

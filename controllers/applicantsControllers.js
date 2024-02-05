@@ -1,4 +1,5 @@
 const Applicants = require('../models/applicantsModel');
+const userService = require('../services/userServices');
 const ErrorResponse = require('../utils/errorResponse');
 
 // Get all applicants
@@ -23,28 +24,6 @@ exports.getApplicantsById = async (req, res, next) => {
             data: {
                 applicant,
             },
-        });
-    } catch (error) {
-        next(error);
-    }
-};
-
-// Create an applicant
-exports.createApplicants = async (req, res, next) => {
-    try {
-        const newApplicant = await Applicants.create({
-            user_id: req.user.user_id,
-            id: req.body.id,
-            first_name: req.body.first_name,
-            last_name: req.body.last_name,
-            email: req.body.email,
-            phone_number: req.body.phone_number,
-            file_name: req.body.file_name,
-            file_type: req.body.file_type,
-        });
-        res.status(201).json({
-            success: true,
-            newApplicant,
         });
     } catch (error) {
         next(error);
@@ -87,6 +66,29 @@ exports.deleteApplicants = async (req, res, next) => {
         res.status(200).json({
             success: true,
             message: 'Applicant deleted',
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+// Create a new applicant
+exports.createApplicants = async (req, res, next) => {
+    try {
+        // Get or create the user
+        const user = await userService.ensureApplicantUser(req.body);
+
+        // Include all fields from req.body.applicant_info
+        const applicantData = {
+            ...req.body.applicant_info,
+            user_id: user.user_id
+        };
+
+        const newApplicant = await Applicants.create(applicantData);
+
+        res.status(201).json({
+            success: true,
+            data: newApplicant,
         });
     } catch (error) {
         next(error);
