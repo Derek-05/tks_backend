@@ -71,12 +71,7 @@ const Applicants = sequelize.define('applicants', {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
-            allowNullDuringCreation(value) {
-                // Check if it's a new record and user_id is provided or null
-                if (this.isNewRecord && (value === null || typeof value !== 'undefined')) {
-                    throw new Error("User ID cannot be provided during creation");
-                }
-            },
+            notNull: {msg: "User ID is required"}
         },
     },
     
