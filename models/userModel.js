@@ -109,6 +109,8 @@ Role.hasMany( Users, { foreignKey: 'roleId' }); // Each role can have many users
         return JWT.sign({ user: this.user_id, role: role ? role.name : null }, process.env.JWT_SECRET, {
             expiresIn: 3600,
         });
+
+    
     };
   
  module.exports = Users;
