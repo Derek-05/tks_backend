@@ -6,7 +6,7 @@ const router = express.Router();
 //applicant routes
 
 // /api/allApplicants
-router.get('/allApplicants', isAdmin,  getAllApplicants );
+router.get('/allApplicants', getAllApplicants );
 
 // /api/getApplicants/:id
 router.get('/getApplicants/:id', isAuthenticated, isAdmin, getApplicantsById);
