@@ -10,7 +10,7 @@ const router = express.Router();
 //user routes
 
 // /api/allusers
-router.get('/allusers',isAuthenticated, isAdmin, allUsers);
+router.get('/allusers', allUsers);
 
 // /api/singleuser/:id
 router.get('/singleuser/:id',isAuthenticated, isAdmin, singleUser);
