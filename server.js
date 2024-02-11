@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded ({
     extended: true
 }));
 app.use(cookieParser());
-app.use(cors({origin: 'http://localhost:3000', credentials: true, allowedHeaders: ['Content-Type', 'Authorization']}));
+app.use(cors({origin: 'http://localhost:3000', credentials: true, allowedHeaders: ['Content-Type', 'Authorization', 'withCredentials']}));
 app.use(express.json());
 
 
