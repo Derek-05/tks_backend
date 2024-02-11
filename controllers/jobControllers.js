@@ -17,7 +17,7 @@ exports.getAllJobOfferings = async (req, res, next) => {
             : {};
 
         // Enable pagination
-        const jobPerPage = 5;
+        const jobPerPage = 10;
         const page = Number(req.query.pageNumber) || 1;
 
         if (page < 1 || !Number.isInteger(page)) {
