@@ -7,6 +7,9 @@ const Role = require('../models/roleModel');
 //check is user is authenticated
 
 exports.isAuthenticated = async (req, res, next) => {
+    console.log('Headers:', req.headers);
+    console.log('Cookies:', req.cookies); 
+    
     const { token } = req.cookies;
 
     // Make sure token exists
