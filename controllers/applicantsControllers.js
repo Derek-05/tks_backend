@@ -97,6 +97,8 @@ exports.createApplicants = async (req, res, next) => {
             success: true,
             data: newApplicant,
         });
+
+
     } catch (error) {
         next(error);
     }
