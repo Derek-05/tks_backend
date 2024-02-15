@@ -84,7 +84,9 @@ exports.createApplicants = async (req, res, next) => {
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             email: req.body.email,
-            job_offering_id: req.body.job_offering_id
+            job_offering_id: req.body.job_offering_id,
+            file_name: req.body.file_name,
+            file_type: req.body.file_type,
 
         
         };
