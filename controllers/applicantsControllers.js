@@ -30,6 +30,42 @@ exports.getApplicantsById = async (req, res, next) => {
     }
 };
 
+
+
+
+exports.getApplicantWithFilesById = async (req, res, next) => {
+    try {
+        const applicantId = req.params.id;
+
+        // Find the applicant by ID
+        const applicant = await Applicants.findByPk(applicantId);
+
+        if (!applicant) {
+            return res.status(404).json({ success: false, error: 'Applicant not found' });
+        }
+
+        // Extract file-related information from the applicant
+        const files = {
+            file_name: applicant.file_name,
+            file_type: applicant.file_type,
+            file_size: applicant.file_size,
+            data: applicant.data
+            // Add more file-related fields as needed
+        };
+
+        // Return the file-related information for the applicant
+        res.status(200).json({
+            success: true,
+            data: files // Return the files directly without nesting under another 'files' object
+        });
+    } catch (error) {
+        // Handle errors
+        console.error('Error fetching file-related information for applicant by ID:', error);
+        res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
+};
+
+
 // Update an existing applicant by id
 exports.updateApplicants = async (req, res, next) => {
     try {
@@ -87,6 +123,8 @@ exports.createApplicants = async (req, res, next) => {
             job_offering_id: req.body.job_offering_id,
             file_name: req.body.file_name,
             file_type: req.body.file_type,
+            file_size: req.body.file_size,
+            data:req.body.data
 
         
         };
