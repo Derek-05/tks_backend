@@ -44,6 +44,14 @@ const dotenv = require('dotenv')
         },
     },
 
+    phone_number: {
+        type: DataTypes.STRING,
+        allowNull: true, 
+        validate: {
+            is: /^\+?\d{7,}$/ 
+        }
+    },
+
     email:{
         type: DataTypes.STRING,
         trim: true,
@@ -54,14 +62,6 @@ const dotenv = require('dotenv')
             },
         unique: true,
         
-    },
-
-    phone_number: {
-        type: DataTypes.STRING,
-        allowNull: true, 
-        validate: {
-            is: /^\+?\d{7,}$/ 
-        }
     },
 
     password: {
@@ -87,8 +87,54 @@ const dotenv = require('dotenv')
         validate: {
             notNull: { msg: "Role ID is required" }
         }
+    },
+
+
+    dof:{
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+
+    sex: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+            isIn: [['male', 'female']], // Replace with actual values
+        },
+    },
+
+    description: {
+        type: DataTypes.STRING,
+        allowNull: true,
+
+    },
+
+    major_skills: {
+        type: DataTypes.STRING,
+        allowNull: true,
+
+    },
+
+    
+    education: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+
+    vision: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+
+    why_join:{
+        type: DataTypes.STRING,
+        allowNull: true
     }
 
+    
+
+
+    
     
 });  
 

@@ -119,13 +119,16 @@ exports.createApplicants = async (req, res, next) => {
             user_id: user.user_id,
             first_name: req.body.first_name,
             last_name: req.body.last_name,
+            dof: req.body.dof,
+            sex: req.body.sex,
             email: req.body.email,
             job_offering_id: req.body.job_offering_id,
-            file_name: req.body.file_name,
-            file_type: req.body.file_type,
-            file_size: req.body.file_size,
-            data:req.body.data
-
+            description: req.body.description,
+            major_skills: req.body.major_skills,
+            education_qualification: req.body.education_qualification,
+            vision: req.body.vision,
+            why_join: req.body.why_join
+            
         
         };
 

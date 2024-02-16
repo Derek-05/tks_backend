@@ -10,23 +10,6 @@ const Applicants = sequelize.define('applicants', {
         primaryKey: true
     },
     
-    file_name: {
-        type: DataTypes.STRING
-    },
-    file_type: {
-        type: DataTypes.STRING,
-    },
-
-    file_size: { // New field for file size
-        type: DataTypes.INTEGER, // Assuming file size is stored as an integer representing bytes
-        allowNull: false
-      },
-      
-      data: {
-        type: DataTypes.BLOB('long'), // Assuming file content is stored as a BLOB (binary large object)
-        allowNull: false
-      },
-    
     
     user_id: {
         type: DataTypes.INTEGER,
