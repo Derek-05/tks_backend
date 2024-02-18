@@ -95,7 +95,7 @@ const dotenv = require('dotenv')
         allowNull: true
     },
 
-    sex: {
+    gender: {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
@@ -103,39 +103,28 @@ const dotenv = require('dotenv')
         },
     },
 
-    description: {
-        type: DataTypes.STRING,
-        allowNull: true,
-
-    },
-
-    major_skills: {
-        type: DataTypes.STRING,
-        allowNull: true,
-
-    },
-
-    
     education: {
         type: DataTypes.STRING,
         allowNull: true,
+
     },
 
-    vision: {
+    skills: {
+        type: DataTypes.STRING,
+        allowNull: true,
+
+    },
+
+    experience:{
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+
+    achievements: {
         type: DataTypes.STRING,
         allowNull: true,
     },
-
-    why_join:{
-        type: DataTypes.STRING,
-        allowNull: true
-    }
-
-    
-
-
-    
-    
+ 
 });  
 
 Users.belongsTo(Role, { foreignKey: 'roleId' }); // Each user belongs to one role

@@ -120,16 +120,13 @@ exports.createApplicants = async (req, res, next) => {
             first_name: req.body.first_name,
             last_name: req.body.last_name,
             dof: req.body.dof,
-            sex: req.body.sex,
+            gender: req.body.gender,
             email: req.body.email,
             job_offering_id: req.body.job_offering_id,
-            description: req.body.description,
-            major_skills: req.body.major_skills,
-            education_qualification: req.body.education_qualification,
-            vision: req.body.vision,
-            why_join: req.body.why_join
-            
-        
+            education: req.body.education,
+            skills: req.body.skills,
+            experience: req.body.experience,
+            achievements: req.body.achievements,
         };
 
         const newApplicant = await Applicants.create(applicantData);
