@@ -1,67 +1,84 @@
-
+// Import required modules
 const express = require("express");
-const app = express();
-const cors =require("cors");
+const cors = require("cors");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const sequelize = require('./database/db'); 
+const multer = require("multer");
+const path = require('path');
 const cookieParser = require("cookie-parser");
+
+// Import Sequelize and database connection
+const sequelize = require('./database/db');
+
+// Import error handler middleware
 const errorHandler = require("./middleware/errorHandler");
 
-//Port
-const PORT = process.env.PORT || 8080;
-
-
-//import all routes
+// Import all routes
 const authRoutes = require('./routes/authRoutes');
-const userRoutes = require ('./routes/userRoutes');
+const userRoutes = require('./routes/userRoutes');
 const jobRoutes = require('./routes/jobRoutes');
 const applicantRoutes = require('./routes/applicantRoutes');
 
 // Import all models
 const User = require('./models/userModel');
-const Role = require('./models/roleModel'); 
-const JobOffering = require('./models/jobModel'); 
-const Applicants = require('./models/applicantsModel'); 
+const Role = require('./models/roleModel');
+const JobOffering = require('./models/jobModel');
+const Applicants = require('./models/applicantsModel');
 
-//Middleware
-app.use(morgan ('dev'));
-app.use(bodyParser.json ({limit: "5mb"}));
-app.use(bodyParser.urlencoded ({
-    limit: "5mb",
-    extended: true
+// Create an Express app
+const app = express();
+
+// Port configuration
+const PORT = process.env.PORT || 8080;
+
+// Middleware configuration
+app.use(morgan('dev')); // Logging middleware
+app.use(bodyParser.json({ limit: "5mb" })); // JSON body parser middleware
+app.use(bodyParser.urlencoded({ limit: "5mb", extended: true })); // URL-encoded body parser middleware
+app.use(cookieParser()); // Cookie parser middleware
+app.use(cors({ // CORS middleware
+    origin: 'http://localhost:3000', // Allow requests from this origin
+    credentials: true, // Allow sending cookies
+    allowedHeaders: ['Content-Type', 'Authorization'] // Allowed headers
 }));
-app.use(cookieParser());
-app.use(cors({origin: 'http://localhost:3000', credentials: true, allowedHeaders: ['Content-Type', 'Authorization']}));
-app.use(express.json());
+app.use(express.json()); // JSON parser middleware
 
+// Multer configuration for file uploads
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/'); // Destination directory for uploaded files
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname); // Keep the original filename
+    }
+});
 
-//routes for users
-app.use('/api', authRoutes);
-app.use('/api', userRoutes);
+const upload = multer({ storage: storage }); // Multer instance
 
-//routes for jobs
-app.use('/api', jobRoutes);
+// Use Multer middleware for handling file uploads
+app.use(upload.single('file'));
 
-//routes for applicants
-app.use('/api', applicantRoutes);
+// Make the uploads directory static to serve files
+app.use("/api/uploads", express.static("uploads"));
 
-//custom error Middleware
+// Routes configuration
+app.use('/api', authRoutes); // Authentication routes
+app.use('/api', userRoutes); // User routes
+app.use('/api', jobRoutes); // Job routes
+app.use('/api', applicantRoutes); // Applicant routes
+
+// Custom error middleware
 app.use(errorHandler);
 
-
-
-// sequelize.sync() will create all table if they doesn't exist in database
+// Database synchronization and server startup
 sequelize.sync().then(async () => {
-    console.log('Todas las tablas han sido creadas');
+    console.log('All tables have been created');
     
     // Ensure default roles are present
     await Role.ensureDefaultRoles();
 }).catch((error) => {
-    console.error('Error al sincronizar la base de datos:', error);
+    console.error('Error synchronizing the database:', error);
 });
 
-
-
-
-app.listen(PORT, ()=> console.log (`Server running on PORT ${PORT}`))
+// Start the server
+app.listen(PORT, () => console.log(`Server running on PORT ${PORT}`));
