@@ -25,8 +25,21 @@ const Role = require('./models/roleModel');
 const JobOffering = require('./models/jobModel');
 const Applicants = require('./models/applicantsModel');
 
+
 // Create an Express app
 const app = express();
+
+//Middleware
+app.use(morgan ('dev'));
+app.use(bodyParser.json ({limit: "5mb"}));
+app.use(bodyParser.urlencoded ({
+    limit: "5mb",
+    extended: true
+}));
+app.use(cookieParser());
+app.use(cors({origin: 'http://localhost:3000', credentials: true, allowedHeaders: ['Content-Type', 'Authorization', 'withCredentials']}));
+app.use(express.json());
+
 
 // Port configuration
 const PORT = process.env.PORT || 8080;
