@@ -1,8 +1,7 @@
 const User = require('../models/userModel');
 const ErrorResponse = require('../utils/errorResponse');
 
-
-//show all users
+// Show all users
 exports.allUsers = async (req, res, next) => {
     try {
         // Enable pagination
@@ -37,8 +36,7 @@ exports.allUsers = async (req, res, next) => {
     }
 };
 
-
-//show single user
+// Show single user
 exports.singleUser = async (req, res, next) => {
     try {
         const user = await User.findByPk(req.params.id);
@@ -58,7 +56,7 @@ exports.singleUser = async (req, res, next) => {
     }
 };
 
-//edit user
+// Edit user
 exports.editUser = async (req, res, next) => {
     try {
         const user = await User.findByPk(req.params.id);
@@ -75,22 +73,26 @@ exports.editUser = async (req, res, next) => {
                 updatedUser,
             },
         });
-    
-    
     } catch (error) {
         next(error instanceof ErrorResponse ? error : new ErrorResponse('Internal Server Error', 500));
     }
 };
 
-//delete user
+// Delete user
 exports.deleteUser = async (req, res, next) => {
     try {
         // Find the user by primary key
         const user = await User.findByPk(req.params.id);
 
+        // Check if user exists
+        if (!user) {
+            throw new ErrorResponse('User not found', 404);
+        }
+
+        // Delete user
         await user.destroy();
 
-       res.status(200).json({
+        res.status(200).json({
             success: true,
             message: "User deleted",
         });

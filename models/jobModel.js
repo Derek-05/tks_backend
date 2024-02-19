@@ -1,78 +1,72 @@
+// Import Sequelize DataTypes and database connection
 const { DataTypes } = require('sequelize');
 const sequelize = require("../database/db");
-const User = require("./userModel")
+
+// Import User model for association
+const User = require("./userModel");
+
+// Define the JobOffering model
 const JobOffering = sequelize.define('jobOffering', {
+    // Define id column
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-
-    
-    title:{
-        type:DataTypes.STRING,
+    // Define title column
+    title: {
+        type: DataTypes.STRING,
         allowNull: false,
         validate: {
             notNull: { msg: "Title is required" }
         },
         maxlength: 70,
     },
-    
-    
-    description:{
-        type:DataTypes.STRING,
+    // Define description column
+    description: {
+        type: DataTypes.STRING,
         trim: true,
         allowNull: false,
         validate: {
             notNull: { msg: "Description is required" }
         }
-       
-    }, 
-    
-    
-    salary:{
-         type:DataTypes.STRING,
-         trim: true,
-         allowNull: false,
+    },
+    // Define salary column
+    salary: {
+        type: DataTypes.STRING,
+        trim: true,
+        allowNull: false,
         validate: {
             notNull: { msg: "Salary is required" }
         }
-         
     },
-    
-    
-    
-    qualifications:{
-        type:DataTypes.STRING,
+    // Define qualifications column
+    qualifications: {
+        type: DataTypes.STRING,
         trim: true,
         allowNull: false,
         validate: {
             notNull: { msg: "Qualifications is required" }
         }
-        
     },
-
-    available:{
-        type:DataTypes.BOOLEAN,
-        default: true,
+    // Define available column
+    available: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
     },
-    
-    
-   user_id:{
+    // Define user_id column for association
+    user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         validate: {
             notNull: { msg: "User ID is required" }
         }
-       
     },
-
-    
-    
 });
 
-// Define the association
-JobOffering.belongsTo(User, { foreignKey: 'user_id' });
-User.hasMany(JobOffering, { foreignKey: 'user_id' });
+// Define association between models
+JobOffering.belongsTo(User, { foreignKey: 'user_id' }); // Define a many-to-one relationship between User and JobOffering
+User.hasMany(JobOffering, { foreignKey: 'user_id' }); // Define a one-to-many relationship between User and JobOffering
 
+// Export the JobOffering model
 module.exports = JobOffering;

@@ -2,8 +2,6 @@ const { Op } = require('sequelize');
 const JobOffering = require('../models/jobModel');
 const ErrorResponse = require("../utils/errorResponse");
 
-
-
 // Get all job offerings
 exports.getAllJobOfferings = async (req, res, next) => {
     try {
@@ -20,6 +18,7 @@ exports.getAllJobOfferings = async (req, res, next) => {
         const jobPerPage = 10;
         const page = Number(req.query.pageNumber) || 1;
 
+        // Check if page number is valid
         if (page < 1 || !Number.isInteger(page)) {
             throw new ErrorResponse("Invalid page number", 400);
         }
@@ -35,8 +34,6 @@ exports.getAllJobOfferings = async (req, res, next) => {
             attributes: { exclude: ['user_id'] },
         });
 
-    
-
         // Get the total count for calculating total pages
         const count = await JobOffering.count({ where: { ...keyword } });
 
@@ -51,22 +48,18 @@ exports.getAllJobOfferings = async (req, res, next) => {
     }
 };
 
-
-
 // Get a single job offering by ID
 exports.getJobOfferingById = async (req, res, next) => {
     try {
         const jobOffering = await JobOffering.findByPk(req.params.id);
-            res.status(200).json({
-                success: true,
-                jobOffering
-             })
+        res.status(200).json({
+            success: true,
+            jobOffering
+        });
     } catch (error) {
         next(error);
     }
 };
-
-
 
 // Create a new job offering
 exports.createJobOffering = async (req, res, next) => {
@@ -78,32 +71,26 @@ exports.createJobOffering = async (req, res, next) => {
             salary: req.body.salary,
             qualifications: req.body.qualifications,
             available: req.body.available,
-            
-            
-            
         });
         res.status(201).json({
             success: true,
             newJobOffering
-        })
-    } catch(error){
+        });
+    } catch(error) {
         next(error);
     }
 };
 
-
-
 // Update an existing job offering by id
 exports.updateJobOffering = async (req, res, next) => {
-    
     try {
-        const Job = await JobOffering.findByPk(req.params.id);
+        const job = await JobOffering.findByPk(req.params.id);
 
-        if (!Job) {
+        if (!job) {
             throw new ErrorResponse('Job not found', 404);
-        };
+        }
 
-        const updatedJob = await Job.update(req.body, { new: true });
+        const updatedJob = await job.update(req.body, { new: true });
 
         res.status(200).json({
             success: true,
@@ -111,18 +98,19 @@ exports.updateJobOffering = async (req, res, next) => {
                updatedJob,
             },
         });
-    
     } catch (error) {
         next(error);
-    };
+    }
 };
-
 
 // Delete a job offering
 exports.deleteJobOffering = async (req, res, next) => {
     try {
-        
-        const job= await JobOffering.findByPk(req.params.id);
+        const job = await JobOffering.findByPk(req.params.id);
+
+        if (!job) {
+            throw new ErrorResponse('Job not found', 404);
+        }
 
         await job.destroy();
 
@@ -132,6 +120,5 @@ exports.deleteJobOffering = async (req, res, next) => {
         });
     } catch (error) {
         next(error);
-    };
-    
+    }
 };
