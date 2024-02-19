@@ -45,6 +45,22 @@ const Users = sequelize.define('users', {
         },
         unique: true,
     },
+
+    //Define date of birth column
+    dof:{
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+
+    //Define gender column
+    gender: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        validate: {
+            isIn: [['male', 'female']], // Replace with actual values
+        },
+    },
+
     // Define phone_number column
     phone_number: {
         type: DataTypes.STRING,
