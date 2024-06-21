@@ -57,7 +57,7 @@ const Users = sequelize.define('users', {
         type: DataTypes.STRING,
         allowNull: true,
         validate: {
-            isIn: [['male', 'female']], // Replace with actual values
+            isIn: [['male', 'female', 'donotspecify']], // Replace with actual values
         },
     },
 
