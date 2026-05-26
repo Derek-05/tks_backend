@@ -1,0 +1,12 @@
+services:
+  backend:
+    build:
+      context: .
+    env_file:
+      - .env
+    environment:
+      PORT: 8080
+      CLIENT_URL: http://localhost:3000
+      # If Postgres runs on your Mac, set DB_HOST=host.docker.internal in .env.
+    ports:
+      - "8080:8080"

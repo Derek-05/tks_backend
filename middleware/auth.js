@@ -10,7 +10,9 @@ exports.isAuthenticated = async (req, res, next) => {
     console.log('Headers:', req.headers);
     console.log('Cookies:', req.cookies); 
     
-    const { token } = req.cookies;
+    const authHeader = req.headers.authorization || '';
+    const bearerToken = authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null;
+    const token = bearerToken || req.cookies.token;
 
     // Make sure token exists
     if (!token) {
@@ -19,7 +21,7 @@ exports.isAuthenticated = async (req, res, next) => {
 
     try {
         // Verify token
-        const decoded = JWT.verify(token, 'THEBIGSECRET');
+        const decoded = JWT.verify(token, process.env.JWT_SECRET);
         req.user = await User.findByPk(decoded.user);
 
         if (!req.user) {

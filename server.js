@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const path = require('path');
 const cookieParser = require("cookie-parser");
+require("dotenv").config();
 
 // Import Sequelize and database connection
 const sequelize = require('./database/db');
@@ -29,31 +30,29 @@ const Applicants = require('./models/applicantsModel');
 // Create an Express app
 const app = express();
 
-//Middleware
-app.use(morgan ('dev'));
-app.use(bodyParser.json ({limit: "5mb"}));
-app.use(bodyParser.urlencoded ({
-    limit: "5mb",
-    extended: true
-}));
-app.use(cookieParser());
-app.use(cors({origin: 'http://localhost:3000', credentials: true, allowedHeaders: ['Content-Type', 'Authorization', 'withCredentials']}));
-app.use(express.json());
-
-
 // Port configuration
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || process.env.Port || 8080;
+const allowedOrigins = (process.env.CLIENT_URL || 'http://localhost:3000')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+const corsOptions = {
+    origin(origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        return callback(new Error(`CORS blocked origin: ${origin}`));
+    },
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization', 'withCredentials'],
+};
 
 // Middleware configuration
 app.use(morgan('dev')); // Logging middleware
 app.use(bodyParser.json({ limit: "5mb" })); // JSON body parser middleware
 app.use(bodyParser.urlencoded({ limit: "5mb", extended: true })); // URL-encoded body parser middleware
 app.use(cookieParser()); // Cookie parser middleware
-app.use(cors({ // CORS middleware
-    origin: 'http://localhost:3000', // Allow requests from this origin
-    credentials: true, // Allow sending cookies
-    allowedHeaders: ['Content-Type', 'Authorization'] // Allowed headers
-}));
+app.use(cors(corsOptions)); // CORS middleware
 app.use(express.json()); // JSON parser middleware
 
 // Multer configuration for file uploads
